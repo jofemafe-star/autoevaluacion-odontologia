@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoevaluación Clínica — Odontología UV</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F7F5F0;
+  --surface: #FFFFFF;
+  --surface2: #F0EDE6;
+  --border: #DDD9D0;
+  --border2: #C8C3B8;
+  --text: #1A1714;
+  --text2: #6B6560;
+  --text3: #9C9690;
+  --accent: #2B5C8A;
+  --accent-light: #E8F0F8;
+  --accent2: #1A7A5E;
+  --accent2-light: #E6F4F0;
+  --warn: #B85C1A;
+  --warn-light: #FBF0E8;
+  --danger: #C02B2B;
+  --danger-light: #FAEAEA;
+  --gold: #8A6E2B;
+  --gold-light: #FBF5E8;
+  --r: 6px;
+  --r-lg: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,0.08);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+h1, h2, h3 { font-family: 'DM Serif Display', serif; font-weight: 400; }
+
+/* HEADER */
+.header {
+  background: var(--accent);
+  color: white;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.header-brand { display: flex; align-items: center; gap: 12px; }
+.header-icon {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.header-title { font-family: 'DM Serif Display', serif; font-size: 17px; letter-spacing: 0.01em; }
+.header-sub { font-size: 11px; opacity: 0.7; margin-top: -2px; }
+.header-badge {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 12px;
+  opacity: 0.9;
+}
+
+/* NAV */
+.nav-wrap { background: var(--surface); border-bottom: 1px solid var(--border); }
+.nav { display: flex; max-width: 900px; margin: 0 auto; padding: 0 1.5rem; }
+.nav-btn {
+  padding: 14px 18px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text2);
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-btn:hover { color: var(--text); }
+.nav-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.nav-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent); opacity: 0;
+  transition: opacity 0.15s;
+}
+.nav-btn.active .nav-dot { opacity: 1; }
+
+/* LAYOUT */
+.main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 17px;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title-icon {
+  width: 28px; height: 28px;
+  background: var(--accent-light);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+/* FORMS */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.field { margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.req { color: var(--danger); }
+input[type=text], input[type=date], select, textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  appearance: none;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(43,92,138,0.1);
+}
+textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236B6560'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+
+/* RUBRIC */
+.rubric-section {
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.rubric-header {
+  background: var(--surface2);
+  padding: 10px 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.rubric-num {
+  width: 22px; height: 22px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  font-size: 11px; font-weight: 600;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.rubric-item-title { font-weight: 600; font-size: 13px; flex: 1; }
+.rubric-item-desc { font-size: 12px; color: var(--text3); }
+.rubric-body { padding: 12px 14px; }
+.scale {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+}
+.scale-btn {
+  padding: 10px 4px;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--surface);
+  color: var(--text2);
+  transition: all 0.12s;
+  user-select: none;
+}
+.scale-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+.scale-btn.s1 { background: var(--danger-light); border-color: #E07070; color: var(--danger); }
+.scale-btn.s2 { background: var(--warn-light); border-color: #D4885A; color: var(--warn); }
+.scale-btn.s3 { background: var(--gold-light); border-color: #C4A050; color: var(--gold); }
+.scale-btn.s4 { background: var(--accent-light); border-color: #5A8FC0; color: var(--accent); }
+.scale-btn.s5 { background: var(--accent2-light); border-color: #4AA882; color: var(--accent2); }
+.scale-labels {
+  display: flex; justify-content: space-between;
+  font-size: 10px; color: var(--text3);
+  margin-top: 5px; padding: 0 2px;
+}
+.score-chip {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 12px; font-weight: 600;
+}
+.chip-1 { background: var(--danger-light); color: var(--danger); }
+.chip-2 { background: var(--warn-light); color: var(--warn); }
+.chip-3 { background: var(--gold-light); color: var(--gold); }
+.chip-4 { background: var(--accent-light); color: var(--accent); }
+.chip-5 { background: var(--accent2-light); color: var(--accent2); }
+.chip-na { background: var(--surface2); color: var(--text3); }
+
+/* BUTTONS */
+.btn {
+  padding: 10px 20px;
+  border-radius: var(--r);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid transparent;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.btn-primary:hover { background: #234d78; }
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border2);
+}
+.btn-secondary:hover { background: var(--surface2); }
+.btn-full { width: 100%; justify-content: center; padding: 13px; font-size: 15px; }
+.btn-sm { padding: 6px 12px; font-size: 12px; }
+.btn-success { background: var(--accent2); color: white; border-color: var(--accent2); }
+.btn-success:hover { background: #145f49; }
+
+/* ALERTS */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--r);
+  font-size: 13px;
+  margin-bottom: 1rem;
+  display: flex; align-items: flex-start; gap: 10px;
+  border: 1px solid;
+}
+.alert-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+.alert-ok { background: var(--accent2-light); border-color: #80CEB5; color: #0E5E48; }
+.alert-info { background: var(--accent-light); border-color: #90B8D8; color: #1A4A6E; }
+.alert-warn { background: var(--warn-light); border-color: #D0905A; color: #8A4010; }
+
+/* METRICS */
+.metric-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 1.25rem; }
+.metric {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 1.1rem;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+.metric-val { font-family: 'DM Serif Display', serif; font-size: 30px; color: var(--accent); }
+.metric-lbl { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+
+/* BAR */
+.area-bar { margin-bottom: 14px; }
+.area-bar-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.area-bar-name { font-size: 13px; font-weight: 500; }
+.area-bar-score { font-size: 13px; font-weight: 600; color: var(--accent); }
+.bar-track { background: var(--surface2); border-radius: 4px; height: 7px; overflow: hidden; }
+.bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.6s ease; }
+.bar-fill-green { background: var(--accent2); }
+
+/* TABLE */
+.tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tbl th {
+  text-align: left; padding: 8px 12px;
+  font-size: 11px; font-weight: 600; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.tbl td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: var(--surface2); }
+
+/* BADGES */
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.b-exp { background: var(--accent2-light); color: #0E5E48; }
+.b-rest { background: var(--accent-light); color: #1A4A6E; }
+.b-cir { background: var(--danger-light); color: #8A1818; }
+.b-perio { background: var(--warn-light); color: #7A3A0A; }
+.b-endo { background: #EEF0FB; color: #2A2A8A; }
+.b-prot { background: #F5EBF8; color: #6A2280; }
+
+/* TABS */
+.tabs { display: flex; gap: 6px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+.tab {
+  padding: 7px 16px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  background: var(--surface);
+  color: var(--text2);
+  transition: all 0.12s;
+}
+.tab:hover { border-color: var(--accent); color: var(--accent); }
+.tab.active { background: var(--accent); border-color: var(--accent); color: white; }
+
+/* COMPARE */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 2fr 80px 80px 80px;
+  gap: 0;
+}
+.compare-header {
+  font-size: 11px; font-weight: 600; color: var(--text2);
+  text-transform: uppercase; letter-spacing: 0.05em;
+  padding: 8px 10px;
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+}
+.compare-cell {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  display: flex; align-items: center;
+}
+.compare-cell.center { justify-content: center; font-weight: 600; }
+.diff-pos { color: var(--accent2); }
+.diff-neg { color: var(--danger); }
+.compare-total {
+  background: var(--surface2);
+  font-weight: 600;
+}
+
+/* EMPTY STATE */
+.empty {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text3);
+}
+.empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+.empty-text { font-size: 14px; }
+
+/* FILTER ROW */
+.filter-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 1.25rem; }
+.filter-row select, .filter-row input { width: auto; flex: 1; min-width: 130px; }
+
+/* PROGRESS SECTION */
+.prog-intro { background: var(--accent); color: white; border-radius: var(--r-lg); padding: 1.5rem; margin-bottom: 1.25rem; }
+.prog-intro h2 { font-size: 22px; margin-bottom: 6px; }
+.prog-intro p { font-size: 13px; opacity: 0.8; }
+
+/* SECTION DIVIDER */
+.section-label {
+  font-size: 11px; font-weight: 600; color: var(--text3);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  margin: 1.5rem 0 0.75rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .metric-grid { grid-template-columns: 1fr 1fr; }
+  .compare-grid { grid-template-columns: 1.5fr 60px 60px 60px; }
+  .nav-btn { padding: 12px 10px; font-size: 12px; }
+  .main { padding: 1.25rem 1rem; }
+}
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">
+    <div class="header-icon">🦷</div>
+    <div>
+      <div class="header-title">Autoevaluación Clínica</div>
+      <div class="header-sub">Grado en Odontología · Universidad de Valencia</div>
+    </div>
+  </div>
+  <div class="header-badge">5º Curso · Proyecto de Innovación Docente</div>
+</div>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <button class="nav-btn active" onclick="showPage('alumno-form')"><div class="nav-dot"></div>Autoevaluación</button>
+    <button class="nav-btn" onclick="showPage('alumno-progreso')"><div class="nav-dot"></div>Mi progreso</button>
+    <button class="nav-btn" onclick="showPage('profesor-panel')"><div class="nav-dot"></div>Panel del profesor</button>
+  </nav>
+</div>
+
+<main class="main">
+
+<!-- ===== PÁGINA: FORMULARIO ALUMNO ===== -->
+<div id="page-alumno-form">
+
+  <div class="card">
+    <div class="card-title"><div class="card-title-icon">👤</div>Identificación del alumno</div>
+    <div class="grid-2">
+      <div class="field">
+        <label>Nombre completo <span class="req">*</span></label>
+        <input type="text" id="f-nombre" placeholder="Nombre y apellidos">
+      </div>
+      <div class="field">
+        <label>NIU / DNI <span class="req">*</span></label>
+        <input type="text" id="f-niu" placeholder="Ej. 12345678A">
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="card-title-icon">📋</div>Datos del caso clínico</div>
+    <div class="grid-2">
+      <div class="field">
+        <label>Fecha <span class="req">*</span></label>
+        <input type="date" id="f-fecha">
+      </div>
+      <div class="field">
+        <label>Área clínica <span class="req">*</span></label>
+        <select id="f-area" onchange="renderRubric(this.value)">
+          <option value="">— Selecciona —</option>
+          <option value="exploracion">Exploración / Diagnóstico</option>
+          <option value="restauradora">Procedimientos restauradores</option>
+          <option value="cirugia">Cirugía oral</option>
+          <option value="periodoncia">Periodoncia</option>
+          <option value="endodoncia">Endodoncia</option>
+          <option value="protesis">Prótesis</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Procedimiento realizado <span class="req">*</span></label>
+        <input type="text" id="f-procedimiento" placeholder="Ej. Obturación clase II en 36">
+      </div>
+      <div class="field">
+        <label>Diente(s) / Zona</label>
+        <input type="text" id="f-diente" placeholder="Ej. 36, 37 / Sextante IV">
+      </div>
+      <div class="field">
+        <label>Complejidad del caso</label>
+        <select id="f-complejidad">
+          <option value="">— Selecciona —</option>
+          <option value="Baja">Baja</option>
+          <option value="Media">Media</option>
+          <option value="Alta">Alta</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Paciente (código / iniciales)</label>
+        <input type="text" id="f-paciente" placeholder="Ej. P-042 o J.M.G.">
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="rubric-card">
+    <div class="card-title"><div class="card-title-icon">📊</div>Rúbrica de autoevaluación</div>
+    <div id="rubric-container">
+      <div class="empty">
+        <div class="empty-icon">📋</div>
+        <div class="empty-text">Selecciona un área clínica para ver la rúbrica correspondiente.</div>
+      </div>
+    </div>
+    <div id="score-preview" class="hidden" style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:13px;color:var(--text2);">Puntuación media actual:</span>
+      <span id="score-live" style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--accent);">—</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title"><div class="card-title-icon">💬</div>Reflexión cualitativa</div>
+    <div class="field">
+      <label>¿Qué has hecho bien en este caso?</label>
+      <textarea id="f-bien" placeholder="Describe los aspectos positivos de tu actuación clínica en este caso..."></textarea>
+    </div>
+    <div class="field">
+      <label>¿Qué mejorarías? ¿Qué dificultades has encontrado?</label>
+      <textarea id="f-mejora" placeholder="Reflexiona sobre los puntos a mejorar, errores cometidos o dificultades encontradas..."></textarea>
+    </div>
+    <div class="field">
+      <label>Observaciones adicionales</label>
+      <textarea id="f-obs" placeholder="Cualquier otra observación relevante sobre el caso..." style="min-height:60px;"></textarea>
+    </div>
+  </div>
+
+  <div id="form-msg"></div>
+  <button class="btn btn-primary btn-full" onclick="submitForm()">✓ Enviar autoevaluación</button>
+</div>
+
+<!-- ===== PÁGINA: PROGRESO ALUMNO ===== -->
+<div id="page-alumno-progreso" class="hidden">
+  <div class="card">
+    <div class="card-title"><div class="card-title-icon">🔍</div>Consultar mi progreso</div>
+    <div class="grid-2">
+      <div class="field">
+        <label>Mi NIU o DNI</label>
+        <input type="text" id="prog-niu" placeholder="Introduce tu NIU o DNI">
+      </div>
+      <div class="field" style="display:flex;align-items:flex-end;">
+        <button class="btn btn-primary btn-full" onclick="loadProgress()">Ver mi progreso</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="prog-content" class="hidden">
+    <div class="metric-grid">
+      <div class="metric">
+        <div class="metric-val" id="prog-total">0</div>
+        <div class="metric-lbl">Casos registrados</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="prog-media">—</div>
+        <div class="metric-lbl">Puntuación media</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="prog-areas-n">0</div>
+        <div class="metric-lbl">Áreas trabajadas</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-icon">📈</div>Puntuación media por área</div>
+      <div id="prog-areas-bars"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-icon">📁</div>Mis casos registrados</div>
+      <div id="prog-table-wrap">
+        <table class="tbl">
+          <thead><tr><th>Fecha</th><th>Área</th><th>Procedimiento</th><th>Diente/zona</th><th>Auto</th><th>Hetero</th></tr></thead>
+          <tbody id="prog-table"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="prog-comments-wrap" class="hidden">
+      <div class="card">
+        <div class="card-title"><div class="card-title-icon">💬</div>Comentarios del profesor</div>
+        <div id="prog-comments"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PÁGINA: PANEL PROFESOR ===== -->
+<div id="page-profesor-panel" class="hidden">
+  <div class="tabs">
+    <div class="tab active" onclick="profTab('registros')">Registros</div>
+    <div class="tab" onclick="profTab('heteroevaluacion')">Heteroevaluación</div>
+    <div class="tab" onclick="profTab('estadisticas')">Estadísticas del grupo</div>
+  </div>
+
+  <!-- REGISTROS -->
+  <div id="ptab-registros">
+    <div class="card">
+      <div class="card-title"><div class="card-title-icon">🗂</div>Todos los registros</div>
+      <div class="filter-row">
+        <select id="fil-area" onchange="renderRegistros()">
+          <option value="">Todas las áreas</option>
+          <option value="exploracion">Exploración</option>
+          <option value="restauradora">Restauradora</option>
+          <option value="cirugia">Cirugía oral</option>
+          <option value="periodoncia">Periodoncia</option>
+          <option value="endodoncia">Endodoncia</option>
+          <option value="protesis">Prótesis</option>
+        </select>
+        <input type="text" id="fil-alumno" placeholder="Buscar alumno o NIU..." oninput="renderRegistros()">
+        <button class="btn btn-secondary" onclick="exportCSV()">⬇ Exportar CSV</button>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="tbl">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>NIU</th>
+              <th>Fecha</th>
+              <th>Área</th>
+              <th>Procedimiento</th>
+              <th>Complejidad</th>
+              <th>Auto</th>
+              <th>Hetero</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="reg-table-body"></tbody>
+        </table>
+      </div>
+      <div id="reg-empty" class="empty hidden">
+        <div class="empty-icon">📭</div>
+        <div class="empty-text">No hay registros que coincidan con los filtros.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HETEROEVALUACIÓN -->
+  <div id="ptab-heteroevaluacion" class="hidden">
+    <div class="card">
+      <div class="card-title"><div class="card-title-icon">⚖️</div>Seleccionar caso para evaluar</div>
+      <div class="field">
+        <label>Caso clínico</label>
+        <select id="heter-sel" onchange="loadHeteroForm()">
+          <option value="">— Selecciona un caso —</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="heter-form-wrap" class="hidden">
+      <div class="card">
+        <div class="card-title"><div class="card-title-icon">📝</div>Evaluación del profesor</div>
+        <div id="heter-alumno-info" style="margin-bottom:1rem;padding:10px 14px;background:var(--surface2);border-radius:var(--r);font-size:13px;"></div>
+        <div id="heter-rubric"></div>
+        <div class="field" style="margin-top:1rem;">
+          <label>Comentarios y retroalimentación para el alumno</label>
+          <textarea id="heter-comentario" placeholder="Escribe aquí tu valoración, puntos fuertes, aspectos a mejorar y cualquier orientación para el alumno..." style="min-height:100px;"></textarea>
+        </div>
+        <button class="btn btn-success btn-full" onclick="submitHetero()" style="margin-top:0.5rem;">✓ Guardar evaluación del profesor</button>
+      </div>
+
+      <div id="compare-wrap" class="hidden">
+        <div class="card">
+          <div class="card-title"><div class="card-title-icon">🔄</div>Comparativa alumno / profesor</div>
+          <div id="heter-saved-alert" class="hidden"></div>
+          <div style="overflow-x:auto;">
+            <div class="compare-grid">
+              <div class="compare-header">Criterio de evaluación</div>
+              <div class="compare-header" style="text-align:center;">Alumno</div>
+              <div class="compare-header" style="text-align:center;">Profesor</div>
+              <div class="compare-header" style="text-align:center;">Dif.</div>
+              <div id="compare-rows"></div>
+              <div id="compare-rows-b"></div>
+              <div id="compare-rows-c"></div>
+              <div id="compare-rows-d"></div>
+            </div>
+          </div>
+          <div id="compare-comment-wrap" style="margin-top:1rem;padding:10px 14px;background:var(--surface2);border-radius:var(--r);font-size:13px;" class="hidden">
+            <strong style="font-size:12px;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;">Comentario del profesor:</strong>
+            <p id="compare-comment-text" style="margin-top:4px;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ESTADÍSTICAS -->
+  <div id="ptab-estadisticas" class="hidden">
+    <div class="metric-grid">
+      <div class="metric">
+        <div class="metric-val" id="stat-total">0</div>
+        <div class="metric-lbl">Total casos</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="stat-alumnos">0</div>
+        <div class="metric-lbl">Alumnos activos</div>
+      </div>
+      <div class="metric">
+        <div class="metric-val" id="stat-media">—</div>
+        <div class="metric-lbl">Media global (auto)</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-icon">📊</div>Media de autoevaluación por área</div>
+      <div id="stat-areas"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-icon">📈</div>Acuerdo alumno–profesor (casos evaluados)</div>
+      <div id="stat-acuerdo"></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><div class="card-title-icon">🗂</div>Distribución de casos por área</div>
+      <div id="stat-dist"></div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+const AREAS = {
+  exploracion: 'Exploración / Diagnóstico',
+  restauradora: 'Procedimientos restauradores',
+  cirugia: 'Cirugía oral',
+  periodoncia: 'Periodoncia',
+  endodoncia: 'Endodoncia',
+  protesis: 'Prótesis'
+};
+const AREA_BADGE = {
+  exploracion:'b-exp', restauradora:'b-rest', cirugia:'b-cir',
+  periodoncia:'b-perio', endodoncia:'b-endo', protesis:'b-prot'
+};
+const RUBRICS = {
+  exploracion: [
+    { id:'hist', label:'Historia clínica y anamnesis', desc:'Recogida completa de datos médicos, farmacológicos y motivo de consulta' },
+    { id:'expl', label:'Exploración extraoral e intraoral', desc:'Sistemática, orden correcto e identificación de hallazgos relevantes' },
+    { id:'radio', label:'Interpretación radiográfica', desc:'Correcta lectura e integración en el razonamiento diagnóstico' },
+    { id:'diag', label:'Formulación del diagnóstico', desc:'Diagnóstico diferencial razonado, preciso y justificado' },
+    { id:'plan', label:'Plan de tratamiento', desc:'Propuesta coherente, priorizada y adaptada al paciente' }
+  ],
+  restauradora: [
+    { id:'prep', label:'Preparación del campo operatorio', desc:'Aislamiento, ergonomía, selección y manejo del instrumental' },
+    { id:'cavidad', label:'Diseño y preparación cavitaria', desc:'Extensión preventiva, respeto al tejido sano, forma de retención y resistencia' },
+    { id:'material', label:'Manejo del material restaurador', desc:'Mezcla/aplicación correcta, tiempo de trabajo y consistencia adecuados' },
+    { id:'acabado', label:'Acabado y pulido', desc:'Ajuste oclusal, puntos de contacto proximales, contorno axial y marginal' },
+    { id:'result', label:'Resultado clínico final', desc:'Estética, función, adaptación marginal y longevidad esperada' }
+  ],
+  cirugia: [
+    { id:'asepsia', label:'Asepsia y preparación del campo', desc:'Protocolo correcto de antisepsia intra y extraoral, colocación de paños' },
+    { id:'anest', label:'Técnica anestésica', desc:'Zona correcta, volumen y concentración adecuados, seguridad y confort del paciente' },
+    { id:'tecnica', label:'Técnica quirúrgica', desc:'Incisión precisa, despegamiento mucoperióstico, osteotomía si procede' },
+    { id:'sutura', label:'Sutura y hemostasia', desc:'Tipo de sutura adecuado, tensión correcta, hemostasia efectiva y comprobada' },
+    { id:'postop', label:'Instrucciones postoperatorias', desc:'Indicaciones claras y completas al paciente, prescripción farmacológica correcta' }
+  ],
+  periodoncia: [
+    { id:'indice', label:'Índices periodontales', desc:'Técnica de sondaje correcta, registro completo y reproductible' },
+    { id:'diag_perio', label:'Diagnóstico periodontal', desc:'Clasificación 2018: estadio, grado y extensión correctos' },
+    { id:'raspado', label:'Raspado y alisado radicular', desc:'Técnica manual y/o ultrasónica, cobertura completa de sextantes afectados' },
+    { id:'motivacion', label:'Motivación e instrucción en higiene', desc:'Técnica de cepillado, uso de dispositivos interproximales, seguimiento y refuerzo' },
+    { id:'reevalua', label:'Reevaluación y respuesta al tratamiento', desc:'Interpretación de cambios clínicos, ajuste del plan según respuesta' }
+  ],
+  endodoncia: [
+    { id:'acceso', label:'Cavidad de acceso', desc:'Localización correcta de conductos, apertura apropiada, conservación de estructura coronal' },
+    { id:'conductometria', label:'Conductometría', desc:'Uso correcto del localizador apical, verificación radiográfica y registro' },
+    { id:'conform', label:'Conformación de conductos', desc:'Técnica de instrumentación, mantenimiento de la trayectoria original, patency file' },
+    { id:'irrigacion', label:'Irrigación y desinfección', desc:'Protocolo correcto de irrigantes, agitación dinámica, volúmenes adecuados' },
+    { id:'obturacion', label:'Obturación tridimensional', desc:'Longitud adecuada, densidad radiológica, técnica de condensación y sellado apical' }
+  ],
+  protesis: [
+    { id:'prep_prot', label:'Tallado protésico', desc:'Reducciones axiales y oclusales correctas, márgenes bien definidos, ángulo de convergencia adecuado' },
+    { id:'impresion', label:'Impresión / Digitalización', desc:'Calidad del registro, materiales adecuados, zonas críticas correctamente capturadas' },
+    { id:'provtmp', label:'Provisional', desc:'Ajuste marginal, oclusión funcional, estética y función adecuadas' },
+    { id:'prueba', label:'Prueba de la restauración definitiva', desc:'Ajuste interproximal, marginal y oclusal en boca, aceptación del paciente' },
+    { id:'cementado', label:'Cementado definitivo', desc:'Aislamiento correcto, protocolo de cementado, eliminación completa de excesos' }
+  ]
+};
+
+const SCALE_DESC = ['', 'No realizado / incorrecto', 'Deficiente, necesita mucha mejora', 'Aceptable con reservas', 'Correcto y competente', 'Excelente, por encima de lo esperado'];
+
+let records = [];
+let currentHeteroIdx = null;
+
+function loadStorage() {
+  try { const s = localStorage.getItem('odon_uv_records'); if(s) records = JSON.parse(s); } catch(e) {}
+}
+function saveStorage() {
+  try { localStorage.setItem('odon_uv_records', JSON.stringify(records)); } catch(e) {}
+}
+loadStorage();
+document.getElementById('f-fecha').valueAsDate = new Date();
+
+// ====== RÚBRICA ======
+function renderRubric(area) {
+  const c = document.getElementById('rubric-container');
+  const prev = document.getElementById('score-preview');
+  if (!area || !RUBRICS[area]) {
+    c.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-text">Selecciona un área clínica para ver la rúbrica correspondiente.</div></div>';
+    prev.classList.add('hidden');
+    return;
+  }
+  prev.classList.remove('hidden');
+  c.innerHTML = RUBRICS[area].map((r, i) => `
+    <div class="rubric-section">
+      <div class="rubric-header">
+        <div class="rubric-num">${i+1}</div>
+        <div style="flex:1">
+          <div class="rubric-item-title">${r.label}</div>
+          <div class="rubric-item-desc">${r.desc}</div>
+        </div>
+        <div id="chip-${r.id}" class="score-chip chip-na">—/5</div>
+      </div>
+      <div class="rubric-body">
+        <div class="scale" id="scale-${r.id}">
+          ${[1,2,3,4,5].map(n=>`<div class="scale-btn" data-val="${n}" onclick="selectScale('${r.id}',${n},this)" title="${SCALE_DESC[n]}">${n}</div>`).join('')}
+        </div>
+        <div class="scale-labels"><span>1 — No realizado</span><span>3 — Aceptable</span><span>5 — Excelente</span></div>
+      </div>
+    </div>`).join('');
+}
+renderRubric('');
+
+function selectScale(id, val, el) {
+  const btns = document.getElementById('scale-'+id).querySelectorAll('.scale-btn');
+  btns.forEach(b => b.className = 'scale-btn');
+  btns.forEach((b, i) => { if (i < val) b.classList.add('s'+val); });
+  document.getElementById('scale-'+id).dataset.val = val;
+  const chip = document.getElementById('chip-'+id);
+  chip.className = 'score-chip chip-'+val;
+  chip.textContent = val+'/5';
+  updateScoreLive();
+}
+
+function updateScoreLive() {
+  const area = document.getElementById('f-area').value;
+  if (!area || !RUBRICS[area]) return;
+  const vals = RUBRICS[area].map(r => {
+    const v = document.getElementById('scale-'+r.id)?.dataset.val;
+    return v ? parseInt(v) : null;
+  }).filter(v => v !== null);
+  const el = document.getElementById('score-live');
+  if (vals.length === 0) { el.textContent = '—'; return; }
+  el.textContent = (vals.reduce((a,b)=>a+b,0)/vals.length).toFixed(2) + ' / 5';
+}
+
+function getScores(area) {
+  if (!area || !RUBRICS[area]) return null;
+  const scores = {};
+  for (const r of RUBRICS[area]) {
+    const v = document.getElementById('scale-'+r.id)?.dataset.val;
+    scores[r.id] = v ? parseInt(v) : null;
+  }
+  return scores;
+}
+
+function calcMedia(scores) {
+  const vals = Object.values(scores).filter(v => v !== null);
+  return vals.length ? vals.reduce((a,b)=>a+b,0)/vals.length : null;
+}
+
+// ====== SUBMIT FORM ======
+function submitForm() {
+  const nombre = document.getElementById('f-nombre').value.trim();
+  const niu = document.getElementById('f-niu').value.trim();
+  const fecha = document.getElementById('f-fecha').value;
+  const area = document.getElementById('f-area').value;
+  const proc = document.getElementById('f-procedimiento').value.trim();
+  const msg = document.getElementById('form-msg');
+
+  if (!nombre || !niu || !fecha || !area || !proc) {
+    msg.innerHTML = '<div class="alert alert-warn"><div class="alert-icon">⚠</div><div>Completa los campos obligatorios marcados con * antes de enviar.</div></div>';
+    return;
+  }
+  const scores = getScores(area);
+  const nulls = Object.values(scores).filter(v => v===null).length;
+  if (nulls > 0) {
+    msg.innerHTML = '<div class="alert alert-warn"><div class="alert-icon">⚠</div><div>Puntúa todos los criterios de la rúbrica antes de enviar. Faltan '+nulls+' criterio(s).</div></div>';
+    return;
+  }
+  const media = calcMedia(scores);
+  const rec = {
+    id: Date.now(),
+    nombre, niu, fecha, area,
+    procedimiento: proc,
+    diente: document.getElementById('f-diente').value.trim(),
+    complejidad: document.getElementById('f-complejidad').value,
+    paciente: document.getElementById('f-paciente').value.trim(),
+    scores,
+    media: parseFloat(media.toFixed(2)),
+    bien: document.getElementById('f-bien').value.trim(),
+    mejora: document.getElementById('f-mejora').value.trim(),
+    obs: document.getElementById('f-obs').value.trim(),
+    hetero: null,
+    heteroComentario: '',
+    heteroFecha: ''
+  };
+  records.push(rec);
+  saveStorage();
+
+  msg.innerHTML = `<div class="alert alert-ok"><div class="alert-icon">✓</div><div><strong>Autoevaluación enviada correctamente.</strong> Puntuación media obtenida: <strong>${media.toFixed(2)} / 5</strong>. Puedes ver tu historial en "Mi progreso".</div></div>`;
+
+  ['f-nombre','f-niu','f-procedimiento','f-diente','f-paciente','f-bien','f-mejora','f-obs'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('f-complejidad').value='';
+  document.getElementById('f-area').value='';
+  document.getElementById('f-fecha').valueAsDate = new Date();
+  renderRubric('');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ====== PROGRESO ALUMNO ======
+function loadProgress() {
+  const q = document.getElementById('prog-niu').value.trim().toLowerCase();
+  if (!q) return;
+  const mine = records.filter(r => r.niu.toLowerCase()===q || r.nombre.toLowerCase().includes(q));
+  const wrap = document.getElementById('prog-content');
+  if (mine.length===0) {
+    wrap.classList.add('hidden');
+    alert('No se encontraron registros para el NIU/nombre introducido.');
+    return;
+  }
+  wrap.classList.remove('hidden');
+  document.getElementById('prog-total').textContent = mine.length;
+  const medias = mine.map(r=>r.media).filter(v=>v!==null);
+  document.getElementById('prog-media').textContent = medias.length ? (medias.reduce((a,b)=>a+b,0)/medias.length).toFixed(2) : '—';
+  const areasSet = new Set(mine.map(r=>r.area));
+  document.getElementById('prog-areas-n').textContent = areasSet.size;
+
+  const areaMap = {};
+  mine.forEach(r=>{ if(!areaMap[r.area]) areaMap[r.area]=[]; if(r.media!==null) areaMap[r.area].push(r.media); });
+  const barsDiv = document.getElementById('prog-areas-bars');
+  barsDiv.innerHTML = Object.entries(areaMap).map(([a,vals])=>{
+    const avg = vals.length ? vals.reduce((x,y)=>x+y,0)/vals.length : 0;
+    return `<div class="area-bar"><div class="area-bar-top"><span class="area-bar-name">${AREAS[a]||a}</span><span class="area-bar-score">${avg.toFixed(2)} / 5</span></div><div class="bar-track"><div class="bar-fill" style="width:${(avg/5*100).toFixed(1)}%"></div></div></div>`;
+  }).join('') || '<p style="color:var(--text3);font-size:13px;">Sin datos.</p>';
+
+  const tbody = document.getElementById('prog-table');
+  tbody.innerHTML = mine.slice().reverse().map(r=>{
+    const hm = r.hetero ? calcMedia(r.hetero).toFixed(2) : '—';
+    return `<tr>
+      <td>${r.fecha}</td>
+      <td><span class="badge ${AREA_BADGE[r.area]||''}">${AREAS[r.area]||r.area}</span></td>
+      <td>${r.procedimiento}</td>
+      <td style="color:var(--text2);">${r.diente||'—'}</td>
+      <td><span class="score-chip chip-${Math.round(r.media)}">${r.media||'—'}/5</span></td>
+      <td style="color:${r.hetero?'var(--accent2)':'var(--text3)'};">${hm}</td>
+    </tr>`;
+  }).join('');
+
+  const withComments = mine.filter(r=>r.heteroComentario);
+  const cwrap = document.getElementById('prog-comments-wrap');
+  if (withComments.length > 0) {
+    cwrap.classList.remove('hidden');
+    document.getElementById('prog-comments').innerHTML = withComments.slice().reverse().map(r=>`
+      <div style="padding:12px 0;border-bottom:1px solid var(--border);">
+        <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">${r.fecha} · ${AREAS[r.area]||r.area} · ${r.procedimiento}</div>
+        <p style="font-size:13px;">${r.heteroComentario}</p>
+      </div>`).join('');
+  } else { cwrap.classList.add('hidden'); }
+}
+
+// ====== PANEL PROFESOR ======
+function showPage(p) {
+  ['alumno-form','alumno-progreso','profesor-panel'].forEach(id => document.getElementById('page-'+id).classList.add('hidden'));
+  document.getElementById('page-'+p).classList.remove('hidden');
+  document.querySelectorAll('.nav-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['alumno-form','alumno-progreso','profesor-panel'][i]===p);
+  });
+  if (p==='profesor-panel') { renderRegistros(); renderStats(); populateHeteroSel(); }
+}
+
+function profTab(t) {
+  ['registros','heteroevaluacion','estadisticas'].forEach(id => document.getElementById('ptab-'+id).classList.add('hidden'));
+  document.getElementById('ptab-'+t).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach((b,i) => b.classList.toggle('active', ['registros','heteroevaluacion','estadisticas'][i]===t));
+  if (t==='estadisticas') renderStats();
+  if (t==='heteroevaluacion') populateHeteroSel();
+}
+
+function renderRegistros() {
+  const aF = document.getElementById('fil-area').value;
+  const tF = document.getElementById('fil-alumno').value.toLowerCase();
+  const filtered = records.filter(r => {
+    if (aF && r.area!==aF) return false;
+    if (tF && !r.nombre.toLowerCase().includes(tF) && !r.niu.toLowerCase().includes(tF)) return false;
+    return true;
+  });
+  const tbody = document.getElementById('reg-table-body');
+  const empty = document.getElementById('reg-empty');
+  if (filtered.length===0) { tbody.innerHTML=''; empty.classList.remove('hidden'); return; }
+  empty.classList.add('hidden');
+  tbody.innerHTML = filtered.slice().reverse().map(r=>{
+    const hm = r.hetero ? calcMedia(r.hetero).toFixed(2) : '—';
+    return `<tr>
+      <td style="font-weight:500;">${r.nombre}</td>
+      <td style="font-size:12px;color:var(--text2);">${r.niu}</td>
+      <td>${r.fecha}</td>
+      <td><span class="badge ${AREA_BADGE[r.area]||''}">${AREAS[r.area]||r.area}</span></td>
+      <td>${r.procedimiento}</td>
+      <td><span style="font-size:12px;color:var(--text2);">${r.complejidad||'—'}</span></td>
+      <td><span class="score-chip chip-${Math.round(r.media)}">${r.media}/5</span></td>
+      <td style="color:${r.hetero?'var(--accent2)':'var(--text3)'};">${hm}</td>
+      <td><button class="btn btn-secondary btn-sm" onclick="openHetero(${r.id})">Evaluar</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function populateHeteroSel() {
+  const sel = document.getElementById('heter-sel');
+  sel.innerHTML = '<option value="">— Selecciona un caso —</option>' +
+    records.map(r=>`<option value="${r.id}">${r.fecha} | ${r.nombre} (${r.niu}) | ${AREAS[r.area]||r.area} | ${r.procedimiento}</option>`).join('');
+}
+
+function openHetero(id) {
+  profTab('heteroevaluacion');
+  document.getElementById('heter-sel').value = id;
+  loadHeteroForm();
+}
+
+function loadHeteroForm() {
+  const id = parseInt(document.getElementById('heter-sel').value);
+  const wrap = document.getElementById('heter-form-wrap');
+  if (!id) { wrap.classList.add('hidden'); return; }
+  const rec = records.find(r=>r.id===id);
+  if (!rec) { wrap.classList.add('hidden'); return; }
+  currentHeteroIdx = records.indexOf(rec);
+  wrap.classList.remove('hidden');
+
+  document.getElementById('heter-alumno-info').innerHTML =
+    `<strong>${rec.nombre}</strong> · NIU: ${rec.niu} · ${rec.fecha}<br>
+     <span class="badge ${AREA_BADGE[rec.area]||''}" style="margin-top:4px;">${AREAS[rec.area]||rec.area}</span>
+     <span style="margin-left:8px;font-size:12px;">${rec.procedimiento}${rec.diente?' · '+rec.diente:''}</span>
+     ${rec.complejidad?`<span style="margin-left:8px;font-size:12px;color:var(--text2);">Complejidad: ${rec.complejidad}</span>`:''}`;
+
+  const rubric = RUBRICS[rec.area]||[];
+  document.getElementById('heter-rubric').innerHTML = rubric.map((r,i)=>{
+    const aV = rec.scores?.[r.id]||0;
+    const hV = rec.hetero?.[r.id]||0;
+    return `<div class="rubric-section">
+      <div class="rubric-header">
+        <div class="rubric-num">${i+1}</div>
+        <div style="flex:1">
+          <div class="rubric-item-title">${r.label}</div>
+          <div class="rubric-item-desc">Autoevaluación del alumno: <strong>${aV}/5</strong></div>
+        </div>
+        <div id="hchip-${r.id}" class="score-chip ${hV?'chip-'+hV:'chip-na'}">${hV?hV+'/5':'—/5'}</div>
+      </div>
+      <div class="rubric-body">
+        <div class="scale" id="hscale-${r.id}">
+          ${[1,2,3,4,5].map(n=>`<div class="scale-btn${hV>=n?' s'+hV:''}" data-val="${n}" onclick="selectHScale('${r.id}',${n},this)" title="${SCALE_DESC[n]}">${n}</div>`).join('')}
+        </div>
+        ${hV ? `<div id="hscale-${r.id}" data-val="${hV}" style="display:none;"></div>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  rubric.forEach(r=>{
+    const hV = rec.hetero?.[r.id];
+    if (hV) document.getElementById('hscale-'+r.id).dataset.val = hV;
+  });
+
+  document.getElementById('heter-comentario').value = rec.heteroComentario||'';
+  if (rec.hetero) { renderCompare(rec); document.getElementById('compare-wrap').classList.remove('hidden'); }
+  else document.getElementById('compare-wrap').classList.add('hidden');
+}
+
+function selectHScale(id, val, el) {
+  const btns = document.getElementById('hscale-'+id).querySelectorAll('.scale-btn');
+  btns.forEach(b=>b.className='scale-btn');
+  btns.forEach((b,i)=>{ if(i<val) b.classList.add('s'+val); });
+  document.getElementById('hscale-'+id).dataset.val = val;
+  const chip = document.getElementById('hchip-'+id);
+  if(chip){ chip.className='score-chip chip-'+val; chip.textContent=val+'/5'; }
+}
+
+function submitHetero() {
+  if (currentHeteroIdx===null) return;
+  const rec = records[currentHeteroIdx];
+  const rubric = RUBRICS[rec.area]||[];
+  const hetero = {};
+  for (const r of rubric) {
+    const v = document.getElementById('hscale-'+r.id)?.dataset.val;
+    hetero[r.id] = v ? parseInt(v) : null;
+  }
+  if (Object.values(hetero).some(v=>v===null)) { alert('Puntúa todos los criterios antes de guardar.'); return; }
+  rec.hetero = hetero;
+  rec.heteroComentario = document.getElementById('heter-comentario').value.trim();
+  rec.heteroFecha = new Date().toISOString().split('T')[0];
+  saveStorage();
+  renderCompare(rec);
+  document.getElementById('compare-wrap').classList.remove('hidden');
+  renderRegistros();
+}
+
+function renderCompare(rec) {
+  const rubric = RUBRICS[rec.area]||[];
+  const rows = rubric.map(r=>{
+    const a = rec.scores?.[r.id]||0;
+    const h = rec.hetero?.[r.id]||0;
+    const diff = h-a;
+    const dcls = diff>0?'diff-pos':diff<0?'diff-neg':'';
+    const sign = diff>0?'+':'';
+    return { label:r.label, a, h, diff, dcls, sign };
+  });
+  const aGlobal = calcMedia(rec.scores).toFixed(2);
+  const hGlobal = calcMedia(rec.hetero).toFixed(2);
+  const dGlobal = (parseFloat(hGlobal)-parseFloat(aGlobal)).toFixed(2);
+  const dGcls = parseFloat(dGlobal)>0?'diff-pos':parseFloat(dGlobal)<0?'diff-neg':'';
+
+  const colA = document.getElementById('compare-rows');
+  const colB = document.getElementById('compare-rows-b');
+  const colC = document.getElementById('compare-rows-c');
+  const colD = document.getElementById('compare-rows-d');
+
+  colA.innerHTML = rows.map(r=>`<div class="compare-cell" style="font-size:13px;">${r.label}</div>`).join('') +
+    `<div class="compare-cell compare-total" style="font-size:13px;">Media global</div>`;
+  colB.innerHTML = rows.map(r=>`<div class="compare-cell center"><span class="score-chip chip-${r.a}">${r.a}/5</span></div>`).join('') +
+    `<div class="compare-cell compare-total center">${aGlobal}</div>`;
+  colC.innerHTML = rows.map(r=>`<div class="compare-cell center"><span class="score-chip chip-${r.h}">${r.h}/5</span></div>`).join('') +
+    `<div class="compare-cell compare-total center">${hGlobal}</div>`;
+  colD.innerHTML = rows.map(r=>`<div class="compare-cell center ${r.dcls}" style="font-weight:600;">${r.sign}${r.diff}</div>`).join('') +
+    `<div class="compare-cell compare-total center ${dGcls}" style="font-weight:600;">${parseFloat(dGlobal)>0?'+':''}${dGlobal}</div>`;
+
+  const cwrap = document.getElementById('compare-comment-wrap');
+  if (rec.heteroComentario) {
+    cwrap.classList.remove('hidden');
+    document.getElementById('compare-comment-text').textContent = rec.heteroComentario;
+  } else { cwrap.classList.add('hidden'); }
+
+  document.getElementById('heter-saved-alert').classList.remove('hidden');
+  document.getElementById('heter-saved-alert').innerHTML = '<div class="alert alert-ok"><div class="alert-icon">✓</div><div>Evaluación del profesor guardada correctamente.</div></div>';
+}
+
+function renderStats() {
+  document.getElementById('stat-total').textContent = records.length;
+  document.getElementById('stat-alumnos').textContent = new Set(records.map(r=>r.niu)).size;
+  const medias = records.map(r=>r.media).filter(v=>v!==null);
+  document.getElementById('stat-media').textContent = medias.length ? (medias.reduce((a,b)=>a+b,0)/medias.length).toFixed(2) : '—';
+
+  const areaMap = {};
+  records.forEach(r=>{ if(!areaMap[r.area]) areaMap[r.area]=[]; if(r.media!==null) areaMap[r.area].push(r.media); });
+  const areasDiv = document.getElementById('stat-areas');
+  areasDiv.innerHTML = Object.entries(areaMap).length ? Object.entries(areaMap).map(([a,vals])=>{
+    const avg = vals.reduce((x,y)=>x+y,0)/vals.length;
+    return `<div class="area-bar"><div class="area-bar-top"><span class="area-bar-name">${AREAS[a]||a} <span style="font-size:12px;color:var(--text3);">(${vals.length} caso${vals.length!==1?'s':''})</span></span><span class="area-bar-score">${avg.toFixed(2)}/5</span></div><div class="bar-track"><div class="bar-fill" style="width:${(avg/5*100).toFixed(1)}%"></div></div></div>`;
+  }).join('') : '<p style="color:var(--text3);font-size:13px;">Sin datos todavía.</p>';
+
+  const withHetero = records.filter(r=>r.hetero);
+  const acDiv = document.getElementById('stat-acuerdo');
+  if (withHetero.length > 0) {
+    const diffs = withHetero.map(r => Math.abs(calcMedia(r.hetero) - calcMedia(r.scores)));
+    const avgDiff = diffs.reduce((a,b)=>a+b,0)/diffs.length;
+    const exact = diffs.filter(d=>d<0.3).length;
+    acDiv.innerHTML = `
+      <div class="metric-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:0;">
+        <div class="metric"><div class="metric-val">${withHetero.length}</div><div class="metric-lbl">Casos co-evaluados</div></div>
+        <div class="metric"><div class="metric-val">${avgDiff.toFixed(2)}</div><div class="metric-lbl">Diferencia media</div></div>
+        <div class="metric"><div class="metric-val">${Math.round(exact/withHetero.length*100)}%</div><div class="metric-lbl">Alta concordancia</div></div>
+      </div>`;
+  } else { acDiv.innerHTML = '<p style="color:var(--text3);font-size:13px;">Sin heteroevaluaciones registradas todavía.</p>'; }
+
+  const total = records.length||1;
+  const distDiv = document.getElementById('stat-dist');
+  distDiv.innerHTML = Object.entries(areaMap).length ? Object.entries(areaMap).map(([a,vals])=>{
+    const pct = (vals.length/total*100);
+    return `<div class="area-bar"><div class="area-bar-top"><span class="area-bar-name">${AREAS[a]||a}</span><span class="area-bar-score">${vals.length} (${pct.toFixed(0)}%)</span></div><div class="bar-track"><div class="bar-fill bar-fill-green" style="width:${pct.toFixed(1)}%"></div></div></div>`;
+  }).join('') : '<p style="color:var(--text3);font-size:13px;">Sin datos todavía.</p>';
+}
+
+// ====== EXPORTAR CSV ======
+function exportCSV() {
+  const headers = [
+    'ID','Nombre','NIU','Fecha','Área','Procedimiento','Diente/Zona',
+    'Complejidad','Paciente','Puntuación auto (media)','Puntuación hetero (media)',
+    'Diferencia','Reflexión positiva','Aspectos a mejorar','Observaciones',
+    'Comentario profesor','Fecha heteroevaluación'
+  ];
+  const escQ = v => '"' + String(v).replace(/"/g,'""') + '"';
+  const rows = records.map(r => {
+    const hm = r.hetero ? calcMedia(r.hetero).toFixed(2) : '';
+    const diff = r.hetero ? (parseFloat(hm)-parseFloat(r.media||0)).toFixed(2) : '';
+    return [
+      r.id, r.nombre, r.niu, r.fecha, AREAS[r.area]||r.area, r.procedimiento,
+      r.diente||'', r.complejidad||'', r.paciente||'',
+      r.media||'', hm, diff, r.bien||'', r.mejora||'', r.obs||'',
+      r.heteroComentario||'', r.heteroFecha||''
+    ].map(escQ).join(',');
+  });
+  const csv = '\uFEFF' + [headers.map(escQ).join(','), ...rows].join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'autoevaluacion_odontologia_UV_' + new Date().toISOString().split('T')[0] + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+</script>
+</body>
+</html>
